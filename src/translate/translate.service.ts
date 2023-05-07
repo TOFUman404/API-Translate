@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { Translate } from '@google-cloud/translate/build/src/v2';
 import axios from 'axios';
-import { ITranslateLanguageTarget, ITranslateTextSearch } from "./translate.interface";
+import {
+  ITranslateLanguageTarget,
+  ITranslateTextSearch,
+} from './translate.interface';
 
 @Injectable()
 export class TranslateService {
@@ -11,19 +14,36 @@ export class TranslateService {
   async translateText(
     body: ITranslateTextSearch,
     targetLanguage: ITranslateLanguageTarget,
-  ): Promise<string> {
-    const apiKey = process.env.GOOGLE_API_KEY;
-    const response = await axios.post(
-      this.baseUrl,
-      {},
-      {
-        params: {
-          key: apiKey,
-          q: body.text,
-          target: targetLanguage.target,
-        },
-      },
+  ) {
+    const response = await this.googleTranslate(
+      body.text,
+      targetLanguage.target,
     );
-    return response.data.data.translations[0].translatedText;
+    return {
+      translatedText: response.translatedText,
+      language: {
+        target: targetLanguage.target,
+        current: response.detectedSourceLanguage,
+      },
+    };
+  }
+
+  private async googleTranslate(text: string, targetLanguage: string) {
+    const apiKey = process.env.GOOGLE_API_KEY;
+    return await axios
+      .post(
+        this.baseUrl,
+        {},
+        {
+          params: {
+            key: apiKey,
+            q: text,
+            target: targetLanguage,
+          },
+        },
+      )
+      .then((response) => {
+        return response.data.data.translations[0];
+      });
   }
 }

@@ -1,5 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { ITranslateLanguageTarget, TranslateLanguage } from "./translate.interface";
+import {
+  ITranslateLanguageTarget,
+  TranslateLanguage,
+} from './translate.interface';
 import { IsString, MaxLength } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -15,7 +18,8 @@ export class TranslateTextSearchDto {
 
 export class TranslateTargetDto implements ITranslateLanguageTarget {
   @ApiProperty({
-    description: 'The target language to translate to (en = English, es = Spanish, th = Thai)',
+    description:
+      'The target language to translate to (en = English, es = Spanish, th = Thai)',
     enum: TranslateLanguage,
     default: TranslateLanguage.ENGLISH,
   })

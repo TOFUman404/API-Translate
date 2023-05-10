@@ -6,17 +6,17 @@ import { TranslateService } from './translate/translate.service';
 import { TranslateModule } from './translate/translate.module';
 import { PrismaService } from './prisma.service';
 import { AuthModule } from './auth/auth.module';
-import { UsersService } from './users/users.service';
-import { UsersModule } from './users/users.module';
 import { AuthService } from './auth/auth.service';
 import { LocalStrategy } from './auth/strategy/local.strategy';
-import { HistoryService } from './history/history.service';
-import { HistoryController } from './history/history.controller';
+import { UsersModule } from './users/users.module';
 import { HistoryModule } from './history/history.module';
+import { HistoryController } from './history/history.controller';
+import { UsersService } from './users/users.service';
+import { HistoryService } from './history/history.service';
 
 @Module({
   imports: [AuthModule, TranslateModule, UsersModule, HistoryModule],
-  controllers: [AppController, TranslateController, HistoryController],
+  controllers: [ TranslateController, HistoryController],
   providers: [
     AppService,
     AuthService,

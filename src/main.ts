@@ -10,6 +10,7 @@ async function bootstrap() {
     .setTitle('Translations API')
     .setDescription('This project is a simple API for translations')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

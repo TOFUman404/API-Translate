@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
+import { IHistoryUsername } from "../history/interface/history.interface";
 
 @Injectable()
 export class UsersService {
@@ -13,11 +14,11 @@ export class UsersService {
     });
   }
 
-  async getUserID(username: string) {
+  async getUserID(username: IHistoryUsername) {
     return await this.prisma.users
       .findUnique({
         where: {
-          username: username,
+          username: username.toString(),
         },
         select: {
           id: true,

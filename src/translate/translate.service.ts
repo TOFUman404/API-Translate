@@ -1,5 +1,7 @@
-import { Injectable } from '@nestjs/common';
-import { Translate } from '@google-cloud/translate/build/src/v2';
+import {
+  Injectable,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import axios from 'axios';
 import {
   ITranslateLanguageTarget,
@@ -29,21 +31,26 @@ export class TranslateService {
 
   private async googleTranslate(text: string, targetLanguage: string) {
     const apiKey = process.env.GOOGLE_API_KEY;
-    return await axios
-      .post(
-        this.baseUrl,
-        {},
-        {
-          params: {
-            key: apiKey,
-            q: text,
-            target: targetLanguage,
+
+    try {
+      return await axios
+        .post(
+          this.baseUrl,
+          {},
+          {
+            params: {
+              key: apiKey,
+              q: text,
+              target: targetLanguage,
+            },
           },
-        },
-      )
-      .then((response) => {
-        return response.data.data.translations[0];
-      });
+        )
+        .then((response) => {
+          return response.data.data.translations[0];
+        });
+    } catch (error) {
+      throw new ServiceUnavailableException('Google Translate API error');
+    }
   }
 
   private async isPalindrome(str: string): Promise<boolean> {

@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TranslateController } from './translate/translate.controller';
 import { TranslateService } from './translate/translate.service';
@@ -16,7 +15,7 @@ import { HistoryService } from './history/history.service';
 
 @Module({
   imports: [AuthModule, TranslateModule, UsersModule, HistoryModule],
-  controllers: [ TranslateController, HistoryController],
+  controllers: [TranslateController, HistoryController],
   providers: [
     AppService,
     AuthService,

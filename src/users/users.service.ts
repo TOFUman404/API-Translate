@@ -12,4 +12,19 @@ export class UsersService {
       },
     });
   }
+
+  async getUserID(username: string) {
+    return await this.prisma.users
+      .findUnique({
+        where: {
+          username: username,
+        },
+        select: {
+          id: true,
+        },
+      })
+      .then((user) => {
+        return user.id;
+      });
+  }
 }

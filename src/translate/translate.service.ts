@@ -4,7 +4,7 @@ import axios from 'axios';
 import {
   ITranslateLanguageTarget,
   ITranslateTextSearch,
-} from './translate.interface';
+} from './interface/translate.interface';
 
 @Injectable()
 export class TranslateService {
@@ -20,11 +20,10 @@ export class TranslateService {
       targetLanguage.target,
     );
     return {
-      translatedText: response.translatedText,
-      language: {
-        target: targetLanguage.target,
-        current: response.detectedSourceLanguage,
-      },
+      text: response.translatedText,
+      target: targetLanguage.target,
+      current: response.detectedSourceLanguage,
+      isPalindrome: await this.isPalindrome(response.translatedText),
     };
   }
 
@@ -45,5 +44,12 @@ export class TranslateService {
       .then((response) => {
         return response.data.data.translations[0];
       });
+  }
+
+  private async isPalindrome(str: string): Promise<boolean> {
+    const lowerStr: string = str.toLowerCase();
+    const cleanedStr: string = lowerStr.replace(/[^a-z0-9]/g, '');
+    const reversedStr: string = cleanedStr.split('').reverse().join('');
+    return cleanedStr === reversedStr;
   }
 }

@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+
+import { IsString, MaxLength } from 'class-validator';
+import { Type } from 'class-transformer';
 import {
   ITranslateLanguageTarget,
   TranslateLanguage,
-} from './translate.interface';
-import { IsString, MaxLength } from 'class-validator';
-import { Type } from 'class-transformer';
+} from '../interface/translate.interface';
 
 export class TranslateTextSearchDto {
   @ApiProperty({

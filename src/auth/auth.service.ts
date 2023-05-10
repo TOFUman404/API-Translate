@@ -16,6 +16,9 @@ export class AuthService {
       throw new NotAcceptableException('User not found');
     }
     const passwordValid = await bcrypt.compare(pass, user.password);
+    if (!passwordValid) {
+      throw new NotAcceptableException('Password not match');
+    }
     if (user && passwordValid) {
       const { password, ...result } = user;
       return result;

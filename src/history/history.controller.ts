@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Patch, Req, UseGuards } from "@nestjs/common";
+import { Controller, Delete, Get, HttpCode, Param, Patch, Req, UseGuards } from "@nestjs/common";
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { HistoryService } from './history.service';
 import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
@@ -10,14 +10,16 @@ import { JwtAuthGuard } from '../auth/guard/jwt-auth.guard';
 export class HistoryController {
   constructor(private readonly historyService: HistoryService) {}
 
-  @Get()
-  async getHistory(@Req() req) {
+  @Get('all')
+  async getHistory(@Req() req: any) {
     return await this.historyService.getHistory(req.user.username);
   }
 
-  @Delete()
-  async deleteAllHistory(@Req() req) {
-    const result = await this.historyService.deleteHistoryByUser(req.user.username);
+  @Delete('all')
+  async deleteAllHistory(@Req() req: any) {
+    const result = await this.historyService.deleteHistoryByUser(
+      req.user.username,
+    );
     if (result) {
       return {
         message: `Delete all history successfully`,
@@ -35,6 +37,7 @@ export class HistoryController {
     }
   }
 
+  @HttpCode(200)
   @Patch('favorite/:id')
   async updateFavoriteById(@Param('id') id: number) {
     const result = await this.historyService.updateFavorite(id);

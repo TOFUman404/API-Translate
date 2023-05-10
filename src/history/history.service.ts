@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { UsersService } from '../users/users.service';
 import * as dayjs from 'dayjs';
+import { HistoryUsernameDto } from './dto/history.dto';
 
 @Injectable()
 export class HistoryService {
@@ -10,7 +11,7 @@ export class HistoryService {
     private userService: UsersService,
   ) {}
 
-  async createHistory(user: any, data: any) {
+  async createHistory(user: HistoryUsernameDto, data: any) {
     const userID = await this.userService.getUserID(user);
     return await this.prisma.translateHistorys.create({
       data: {
@@ -22,7 +23,7 @@ export class HistoryService {
     });
   }
 
-  async getHistory(username: string) {
+  async getHistory(username: HistoryUsernameDto) {
     const userID = await this.userService.getUserID(username);
     return await this.prisma.translateHistorys
       .findMany({
@@ -59,7 +60,7 @@ export class HistoryService {
     });
   }
 
-  async deleteHistoryByUser(username: string) {
+  async deleteHistoryByUser(username: HistoryUsernameDto) {
     const userID = await this.userService.getUserID(username);
     return await this.prisma.translateHistorys.deleteMany({
       where: {
